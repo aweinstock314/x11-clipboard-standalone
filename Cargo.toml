@@ -1,0 +1,15 @@
+[package]
+
+name = "x11-clipboard-standalone"
+version = "0.0.1"
+authors = ["Avi Weinstock <aweinstock314@gmail.com>"]
+
+[[bin]]
+name = "x11-clipboard-standalone"
+path = "src/main.rs"
+test = false
+doc = false
+bench = false
+
+[dependencies.xlib]
+git = "https://github.com/aweinstock314/rust-xlib"
