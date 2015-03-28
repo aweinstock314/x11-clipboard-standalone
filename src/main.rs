@@ -1,4 +1,4 @@
-#![feature(collections, core, libc)]
+#![feature(collections, core)]
 
 extern crate libc;
 extern crate xlib;
@@ -89,16 +89,7 @@ impl ClipboardContext {
                         XGetWindowProperty(dpy, win, pty_atom, 0, 0, 0, 0, type_, 
                                             &mut pty_format, &mut pty_items, &mut pty_size,
                                             &mut buffer);
-                        // This XFree is present in xclib.c, but rustc doesn't like it, and I'm not quite sure why.
-                        /*
-                        src/main.rs:85:31: 85:77 error: mismatched types:
-                         expected `*mut libc::types::common::c95::c_void`,
-                            found `*mut libc::types::common::c95::c_void`
-                        (expected enum `libc::types::common::c95::c_void`,
-                            found a different enum `libc::types::common::c95::c_void`) [E0308]
-                        src/main.rs:85                         XFree(transmute::<*mut c_uchar, *mut c_void>(buffer));
-                        */
-                        //XFree(transmute::<*mut c_uchar, *mut c_void>(buffer));
+                        XFree(buffer as *mut c_void);
                     }
                     if *type_ == incr_atom {
                         unsafe {
@@ -130,8 +121,8 @@ impl ClipboardContext {
                         XGetWindowProperty(dpy, win, pty_atom, 0, 0, 0, 0, type_, 
                                             &mut pty_format, &mut pty_items, &mut pty_size,
                                             &mut buffer);
+                        XFree(buffer as *mut c_void);
                     }
-                    //XFree(transmute::<*mut c_uchar, *mut c_void>(buffer));
                     if pty_size == 0 {
                         unsafe {
                             XDeleteProperty(dpy, win, pty_atom);

@@ -13,3 +13,6 @@ bench = false
 
 [dependencies.xlib]
 git = "https://github.com/aweinstock314/rust-xlib"
+
+[dependencies]
+libc = "*"
