@@ -86,12 +86,9 @@ impl ClipboardContext {
                         return;
                     }
                     unsafe {
-                        XGetWindowProperty(dpy, win, pty_atom, 0, 0, 0, 0,
-                                            transmute::<&mut Atom, *mut Atom>(type_), 
-                                            transmute::<&mut c_int, *mut c_int>(&mut pty_format),
-                                            transmute::<&mut c_ulong, *mut c_ulong>(&mut pty_items),
-                                            transmute::<&mut c_ulong, *mut c_ulong>(&mut pty_size),
-                                            transmute::<&mut *mut c_uchar, *mut *mut c_uchar>(&mut buffer));
+                        XGetWindowProperty(dpy, win, pty_atom, 0, 0, 0, 0, type_, 
+                                            &mut pty_format, &mut pty_items, &mut pty_size,
+                                            &mut buffer);
                         // This XFree is present in xclib.c, but rustc doesn't like it, and I'm not quite sure why.
                         /*
                         src/main.rs:85:31: 85:77 error: mismatched types:
@@ -112,12 +109,9 @@ impl ClipboardContext {
                         return;
                     }
                     unsafe {
-                        XGetWindowProperty(dpy, win, pty_atom, 0, pty_size as c_long, 0, 0,
-                                            transmute::<&mut Atom, *mut Atom>(type_), 
-                                            transmute::<&mut c_int, *mut c_int>(&mut pty_format),
-                                            transmute::<&mut c_ulong, *mut c_ulong>(&mut pty_items),
-                                            transmute::<&mut c_ulong, *mut c_ulong>(&mut pty_size),
-                                            transmute::<&mut *mut c_uchar, *mut *mut c_uchar>(&mut buffer));
+                        XGetWindowProperty(dpy, win, pty_atom, 0, pty_size as c_long, 0, 0, type_, 
+                                            &mut pty_format, &mut pty_items, &mut pty_size,
+                                            &mut buffer);
                     }
                     let pty_machsize: c_ulong = pty_items * (mach_itemsize(pty_format) as c_ulong);
                     dest.push_all(unsafe { std::slice::from_raw_parts_mut(buffer, (pty_machsize as usize) / size_of::<u8>()) });
@@ -133,12 +127,9 @@ impl ClipboardContext {
                         return;
                     }
                     unsafe {
-                        XGetWindowProperty(dpy, win, pty_atom, 0, 0, 0, 0,
-                                            transmute::<&mut Atom, *mut Atom>(type_), 
-                                            transmute::<&mut c_int, *mut c_int>(&mut pty_format),
-                                            transmute::<&mut c_ulong, *mut c_ulong>(&mut pty_items),
-                                            transmute::<&mut c_ulong, *mut c_ulong>(&mut pty_size),
-                                            transmute::<&mut *mut c_uchar, *mut *mut c_uchar>(&mut buffer));
+                        XGetWindowProperty(dpy, win, pty_atom, 0, 0, 0, 0, type_, 
+                                            &mut pty_format, &mut pty_items, &mut pty_size,
+                                            &mut buffer);
                     }
                     //XFree(transmute::<*mut c_uchar, *mut c_void>(buffer));
                     if pty_size == 0 {
@@ -150,12 +141,9 @@ impl ClipboardContext {
                         return;
                     }
                     unsafe {
-                        XGetWindowProperty(dpy, win, pty_atom, 0, pty_size as c_long, 0, 0,
-                                            transmute::<&mut Atom, *mut Atom>(type_), 
-                                            transmute::<&mut c_int, *mut c_int>(&mut pty_format),
-                                            transmute::<&mut c_ulong, *mut c_ulong>(&mut pty_items),
-                                            transmute::<&mut c_ulong, *mut c_ulong>(&mut pty_size),
-                                            transmute::<&mut *mut c_uchar, *mut *mut c_uchar>(&mut buffer));
+                        XGetWindowProperty(dpy, win, pty_atom, 0, pty_size as c_long, 0, 0, type_, 
+                                            &mut pty_format, &mut pty_items, &mut pty_size,
+                                            &mut buffer);
                     }
                     let pty_machsize: c_ulong = pty_items * (mach_itemsize(pty_format) as c_ulong);
                     dest.push_all(unsafe { std::slice::from_raw_parts_mut(buffer, (pty_machsize as usize) / size_of::<u8>()) });
